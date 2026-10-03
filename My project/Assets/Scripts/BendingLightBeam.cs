@@ -140,7 +140,7 @@ public class BendingLightBeam : MonoBehaviour
 
     IEnumerator ClearLineSmoothly(int pointsToClear, Action onComplete)
     {
-        for (int i = 0; i < pointsToClear; i++)
+        for (int i = 0; i < pointsToClear && points.Count > 0; i++)
         {
             points.RemoveAt(0);
             lineRenderer.positionCount = points.Count;

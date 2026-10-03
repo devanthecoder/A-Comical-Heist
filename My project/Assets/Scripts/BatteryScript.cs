@@ -2,7 +2,8 @@ using UnityEngine;
 using UnityEngine.UI;
 public class BatteryScript : MonoBehaviour
 {
-    public Text text; // Reference to the Text component to display battery life
+    public Slider BatterySlider; // Reference to the Text component to display battery life
+    public Slider BlockedOutSlider; // Reference to the Text component to display battery life
     public float batteryLife = 100f; // Battery life in seconds
     public float blockedLife = 0;
     public float replenishRate = 5f; // Rate at which the battery replenishes (negative value for depletion)
@@ -23,7 +24,8 @@ public class BatteryScript : MonoBehaviour
         {
             currentBatteryLife = batteryLife - blockedLife;
         }
-        text.text = "Battery: " + Mathf.RoundToInt(currentBatteryLife) + "%"; // Update the text to show current battery life
+        BatterySlider.value = currentBatteryLife;
+        BlockedOutSlider.value = blockedLife;
     }
 
     public void DepleteBattery(float amount)
