@@ -44,6 +44,17 @@ public class BatteryScript : MonoBehaviour
 
     public void BlockBatteryLife(float amount)
     {
+        blockedLife += amount;
+    }
+
+    public float GetBlockedBatteryLife()
+    {
+        return blockedLife;
+    }
+
+    public float SetBlockedBatteryLife(float amount)
+    {
         blockedLife = amount;
+        return blockedLife;
     }
 }

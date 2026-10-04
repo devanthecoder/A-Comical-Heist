@@ -25,6 +25,7 @@ public class BendingLightBeam : MonoBehaviour
     private bool isBending = false;
     private bool canBend = true;
     private Vector3 currPoint, currDirection;
+    private float batterBeforeBendingStarted;
     List<Vector3> points = new List<Vector3>();
     List<GameObject> BrokenBeams = new List<GameObject>();
     private void Awake()
@@ -58,7 +59,7 @@ public class BendingLightBeam : MonoBehaviour
                 Destroy(brokenBeam, 1f);
             }
             BrokenBeams.Clear();
-            Battery.BlockBatteryLife(0f); // Reset blocked battery life when clearing broken beams
+            Battery.SetBlockedBatteryLife(0f); // Reset blocked battery life when clearing broken beams
         }
     }
 
@@ -73,6 +74,8 @@ public class BendingLightBeam : MonoBehaviour
         points.Add(currPoint); // Add the start point to the list of points
         lineRenderer.SetPositions(points.ToArray());
         canBend = false;
+
+        batterBeforeBendingStarted = Battery.GetBatteryLife(); // Store the battery life before bending starts
     }
 
     void FixedUpdate()
@@ -162,7 +165,7 @@ public class BendingLightBeam : MonoBehaviour
         // brokenEdgeCollider.edgeRadius = brokenLineRenderer.startWidth / 2f; // Set the edge radius to half the line width
         BrokenBeams.Add(brokenBeam);
         ResetBeam(); // Reset the beam after breaking it
-        Battery.BlockBatteryLife(100f-Battery.GetBatteryLife());
+        Battery.BlockBatteryLife(batterBeforeBendingStarted - Battery.GetBatteryLife());
     }
 
     private void CheckForCollisions()
