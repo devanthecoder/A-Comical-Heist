@@ -9,7 +9,7 @@ public class RoomTraverse : MonoBehaviour
             float height = mainCam.orthographicSize * 2f;
             float width = height * mainCam.aspect;
             Vector3 move = new Vector3(transform.right.x * width, transform.right.y * height, 0f);
-            Vector3 playerMove = new Vector3(transform.right.x * 0.5f, transform.right.y * 0.5f, 0f);
+            Vector3 playerMove = new Vector3(transform.right.x * 1.5f, transform.right.y * 1.5f, 0f);
             mainCam.transform.position += move;
             other.transform.position += playerMove;
         }

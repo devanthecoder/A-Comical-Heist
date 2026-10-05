@@ -28,6 +28,7 @@ public class BendingLightBeam : MonoBehaviour
     private float batterBeforeBendingStarted;
     List<Vector3> points = new List<Vector3>();
     List<GameObject> BrokenBeams = new List<GameObject>();
+    public List<Vector3> GetPoints() => points;
     private void Awake()
     {
         lineRenderer = GetComponent<LineRenderer>();

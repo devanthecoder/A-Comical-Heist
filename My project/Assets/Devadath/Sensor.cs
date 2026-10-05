@@ -1,0 +1,100 @@
+using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
+
+public class Sensor : MonoBehaviour
+{
+    [Header("Beam Reference")]
+    public BendingLightBeam lightBeam;   // Reference to your player's BendingLightBeam script
+
+    [Header("Door Target")]
+    public GameObject doorObject;        // The child door GameObject
+    public Collider2D doorCollider;      // The door's physical collider
+
+    [Header("Settings")]
+    public bool hideDoorCompletely = false; // Toggle to hide mesh vs just disable collider
+
+    public Collider2D sensorCollider;
+    private bool isTriggered = false;
+
+    void Update()
+    {
+        bool currentlyHit = CheckIfBeamHitsSensor();
+
+        // State changed: Active beam entered trigger
+        if (currentlyHit && !isTriggered)
+        {
+            isTriggered = true;
+            OpenDoor();
+        }
+        // State changed: Active beam exited trigger, finished retracting, or was broken ('V')
+        else if (!currentlyHit && isTriggered)
+        {
+            isTriggered = false;
+            CloseDoor();
+        }
+    }
+
+    private bool CheckIfBeamHitsSensor()
+    {
+        if (lightBeam == null) return false;
+
+        List<Vector3> points = lightBeam.GetPoints();
+        // Return false if beam is destroyed, broken, or completely retracted
+        if (points == null || points.Count < 2) return false;
+
+        // Check each line segment between consecutive points
+        for (int i = 0; i < points.Count - 1; i++)
+        {
+            Vector2 p1 = points[i];
+            Vector2 p2 = points[i + 1];
+
+            if (SegmentIntersectsSensor(p1, p2))
+            {
+                return true; 
+            }
+        }
+
+        return false;
+    }
+
+    private bool SegmentIntersectsSensor(Vector2 p1, Vector2 p2)
+    {
+        // 1. Check if either endpoint is inside the sensor trigger
+        if (sensorCollider.OverlapPoint(p1) || sensorCollider.OverlapPoint(p2))
+            return true;
+
+        // 2. Check if the line segment passes through the trigger
+        Vector2 dir = p2 - p1;
+        float distance = dir.magnitude;
+        if (distance <= 0.0001f) return false;
+
+        RaycastHit2D[] hits = new RaycastHit2D[1];
+        int hitCount = sensorCollider.Raycast(dir.normalized, hits, distance);
+        return hitCount > 0;
+    }
+
+    private void OpenDoor()
+    {
+        if (hideDoorCompletely && doorObject != null)
+        {
+            doorObject.SetActive(false);
+        }
+        else if (doorCollider != null)
+        {
+            doorCollider.enabled = false;
+        }
+    }
+
+    private void CloseDoor()
+    {
+        if (hideDoorCompletely && doorObject != null)
+        {
+            doorObject.SetActive(true);
+        }
+        else if (doorCollider != null)
+        {
+            doorCollider.enabled = true;
+        }
+    }
+}
