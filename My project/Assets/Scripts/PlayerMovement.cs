@@ -44,4 +44,10 @@ public class PlayerMovement : MonoBehaviour
         rb.linearVelocity = normalized * speed;
         // rb.MovePosition(rb.position + new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")) * speed * Time.fixedDeltaTime);
     }
+
+    public void Stop()
+    {
+        rb.linearVelocity = Vector2.zero;
+        animator.SetFloat("Speed", 0f);
+    }
 }

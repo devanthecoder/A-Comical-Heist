@@ -69,6 +69,7 @@ public class BendingLightBeam : MonoBehaviour
         isBending = true; // Set bending flag to true
 
         playerMovement.enabled = false; // Disable player movement when bending starts
+        playerMovement.Stop(); // Stop the player's movement immediately when bending starts
         // Bob.gameObject.SetActive(true); // Activate Bob when bending starts
         currPoint = transform.position; // Reset the current point to the start point when toggling bending
         currDirection = transform.up; // Reset the current direction to the initial direction
@@ -91,6 +92,7 @@ public class BendingLightBeam : MonoBehaviour
     void CleanBending()
     {
         isBending = false; // Set bending flag to false
+        playerMovement.enabled = true; // Enable player movement when bending stops
         StartCoroutine(ClearLineSmoothly(points.Count, () => {
             ResetBeam(); // Reset the beam after clearing the line renderer
         }));
@@ -100,7 +102,6 @@ public class BendingLightBeam : MonoBehaviour
     void ResetBeam()
     {
         isBending = false; // Set bending flag to false
-        playerMovement.enabled = true; // Enable player movement when bending stops
         // Bob.gameObject.SetActive(false); // Deactivate Bob when bending stops
         points.Clear(); // Clear the points when stopping the bending
         lineRenderer.positionCount = 0; // Reset the line renderer

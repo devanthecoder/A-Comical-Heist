@@ -13,6 +13,7 @@ public class GuardScript : MonoBehaviour
     public float moveDuration = 0.8f;    // Time (seconds) spent traveling between stops
     public float pauseDuration = 0.5f;   // Seconds to pause at each stop
 
+    private Animator animator;
     private Light2D visionLight;
     private Transform lightTransform;
     private float baseZAngle;
@@ -22,12 +23,14 @@ public class GuardScript : MonoBehaviour
     private int direction = 1;
     private float stateTimer = 0f;
     private bool isPausing = false;
+    private bool isBlinded = false;
 
     private float fromAngle;
     private float toAngle;
 
     void Awake()
     {
+        animator = GetComponent<Animator>();
         visionLight = GetComponentInChildren<Light2D>();
         if (visionLight != null)
         {
@@ -44,12 +47,16 @@ public class GuardScript : MonoBehaviour
 
     void Update()
     {
-        HandleSweep();
-
-        if (CanSeePlayer())
+        if (!isBlinded)
         {
-            Debug.Log("Player Detected!");
+            HandleSweep();
+            if (CanSeePlayer())
+            {
+                Debug.Log("Player Detected!");
+            }
         }
+        animator.SetFloat("Right", lightTransform.up.x);
+        animator.SetFloat("Up", lightTransform.up.y);
     }
 
     private void HandleSweep()
@@ -138,5 +145,16 @@ public class GuardScript : MonoBehaviour
         }
 
         return false;
+    }
+
+    public void Blind(float duration)
+    {
+        isBlinded = true;
+        Invoke("RecoverVision", duration); // Recover after specified duration
+    }
+
+    private void RecoverVision()
+    {
+        isBlinded = false;
     }
 }
