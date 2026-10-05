@@ -156,16 +156,67 @@ public class BendingLightBeam : MonoBehaviour
 
     void BreakLightBeam()
     {
-        GameObject brokenBeam = Instantiate(BrokenBeamPrefab, Vector3.zero, Quaternion.identity); // Create a new GameObject for the broken beam
+        // 1. Instantiate the broken beam
+        GameObject brokenBeam = Instantiate(BrokenBeamPrefab, Vector3.zero, Quaternion.identity); 
+
         LineRenderer brokenLineRenderer = brokenBeam.GetComponent<LineRenderer>();
         brokenLineRenderer.positionCount = points.Count;
         brokenLineRenderer.SetPositions(points.ToArray());
-        // EdgeCollider2D brokenEdgeCollider = brokenBeam.AddComponent<EdgeCollider2D>();
-        // brokenEdgeCollider.SetPoints(points.ConvertAll(p => (Vector2)p));
-        // brokenEdgeCollider.edgeRadius = brokenLineRenderer.startWidth / 2f; // Set the edge radius to half the line width
+
+        // 2. Add a PolygonCollider2D instead of EdgeCollider2D
+        PolygonCollider2D polyCollider = brokenBeam.AddComponent<PolygonCollider2D>();
+
+        // 3. Convert line points into a closed ribbon polygon with thickness
+        float thickness = brokenLineRenderer.startWidth > 0 ? brokenLineRenderer.startWidth : 0.5f;
+        Vector2[] ribbonPoints = GenerateRibbonPoints(points, thickness * (2f/3f));
+        polyCollider.SetPath(0, ribbonPoints);
+
+        // 4. Parent to Void Tilemap so it enters its Composite Solver
+        GameObject voidTilemap = GameObject.FindWithTag("Void");
+        if (voidTilemap != null)
+        {
+            brokenBeam.transform.SetParent(voidTilemap.transform);
+
+            // 5. Subtract the closed polygon from the void composite
+            polyCollider.compositeOperation = Collider2D.CompositeOperation.Difference;
+            polyCollider.compositeOrder = 1;
+        }
+
         BrokenBeams.Add(brokenBeam);
-        ResetBeam(); // Reset the beam after breaking it
+        ResetBeam(); 
         Battery.BlockBatteryLife(batterBeforeBendingStarted - Battery.GetBatteryLife());
+    }
+
+    // Helper method: Creates a closed polygon shape wrapping around line points
+    private Vector2[] GenerateRibbonPoints(List<Vector3> linePoints, float offset)
+    {
+        if (linePoints.Count < 2) return new Vector2[0];
+
+        List<Vector2> leftSide = new List<Vector2>();
+        List<Vector2> rightSide = new List<Vector2>();
+
+        for (int i = 0; i < linePoints.Count; i++)
+        {
+            Vector2 current = linePoints[i];
+            Vector2 dir;
+
+            if (i == 0)
+                dir = ((Vector2)linePoints[1] - current).normalized;
+            else if (i == linePoints.Count - 1)
+                dir = (current - (Vector2)linePoints[i - 1]).normalized;
+            else
+                dir = ((Vector2)linePoints[i + 1] - (Vector2)linePoints[i - 1]).normalized;
+
+            Vector2 normal = new Vector2(-dir.y, dir.x) * offset;
+
+            leftSide.Add(current + normal);
+            rightSide.Add(current - normal);
+        }
+
+        // Combine left side (forward) and right side (reversed) into a closed loop
+        rightSide.Reverse();
+        leftSide.AddRange(rightSide);
+        return leftSide.ToArray();
     }
 
     private void CheckForCollisions()
