@@ -8,12 +8,9 @@ public class Sensor : MonoBehaviour
     public BendingLightBeam lightBeam;   // Reference to your player's BendingLightBeam script
 
     [Header("Door Target")]
-    public GameObject doorObject;        // The child door GameObject
-    public Collider2D doorCollider;      // The door's physical collider
+    public SimpleTiledDoor targetDoor;   // Reference to the SimpleTiledDoor script
 
     [Header("Settings")]
-    public bool hideDoorCompletely = false; // Toggle to hide mesh vs just disable collider
-
     public Collider2D sensorCollider;
     private bool isTriggered = false;
 
@@ -21,13 +18,13 @@ public class Sensor : MonoBehaviour
     {
         bool currentlyHit = CheckIfBeamHitsSensor();
 
-        // State changed: Active beam entered trigger
+        // State changed: Active beam entered sensor
         if (currentlyHit && !isTriggered)
         {
             isTriggered = true;
             OpenDoor();
         }
-        // State changed: Active beam exited trigger, finished retracting, or was broken ('V')
+        // State changed: Active beam exited sensor, finished retracting, or was broken
         else if (!currentlyHit && isTriggered)
         {
             isTriggered = false;
@@ -76,25 +73,17 @@ public class Sensor : MonoBehaviour
 
     private void OpenDoor()
     {
-        if (hideDoorCompletely && doorObject != null)
+        if (targetDoor != null)
         {
-            doorObject.SetActive(false);
-        }
-        else if (doorCollider != null)
-        {
-            doorCollider.enabled = false;
+            targetDoor.OpenDoor();
         }
     }
 
     private void CloseDoor()
     {
-        if (hideDoorCompletely && doorObject != null)
+        if (targetDoor != null)
         {
-            doorObject.SetActive(true);
-        }
-        else if (doorCollider != null)
-        {
-            doorCollider.enabled = true;
+            targetDoor.CloseDoor();
         }
     }
 }
