@@ -16,6 +16,7 @@ public class SimpleTiledDoor : MonoBehaviour
     {
         sr = GetComponent<SpriteRenderer>();
         col = GetComponent<BoxCollider2D>();
+        fullWidth = sr.size.x;
     }
 
     private void Update()

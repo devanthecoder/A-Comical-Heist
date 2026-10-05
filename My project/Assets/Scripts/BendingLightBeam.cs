@@ -24,6 +24,8 @@ public class BendingLightBeam : MonoBehaviour
     private LineRenderer lineRenderer;
     private bool isBending = false;
     private bool canBend = true;
+    private bool bendingUnlocked;
+    private bool bridgeUnlocked;
     private Vector3 currPoint, currDirection;
     private float batterBeforeBendingStarted;
     List<Vector3> points = new List<Vector3>();
@@ -38,16 +40,17 @@ public class BendingLightBeam : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            if (!isBending && canBend)
+            if (bendingUnlocked && !isBending && canBend)
             {
                 torch_anim.Play("CloseLight");
                 Invoke("InitBending", torch_anim["CloseLight"].length); // Delay the bending initiation until the animation finishes
-            } else
+            }
+            else if (isBending)
             {
                 CleanBending();
             }
         }
-        if (Input.GetKeyDown(KeyCode.V) && isBending)
+        if (Input.GetKeyDown(KeyCode.V) && bridgeUnlocked && isBending)
         {
             BreakLightBeam();
         }
@@ -62,6 +65,16 @@ public class BendingLightBeam : MonoBehaviour
             BrokenBeams.Clear();
             Battery.SetBlockedBatteryLife(0f); // Reset blocked battery life when clearing broken beams
         }
+    }
+
+    public void UnlockBending()
+    {
+        bendingUnlocked = true;
+    }
+
+    public void UnlockBridge()
+    {
+        bridgeUnlocked = true;
     }
 
     void InitBending()
@@ -127,7 +140,7 @@ public class BendingLightBeam : MonoBehaviour
             currDirection.Normalize(); 
         }
         currPoint += currDirection.normalized * Time.fixedDeltaTime * beamSpeed; // Move the current point in the current direction
-        Bob.position = currPoint; // Update Bob's position to the current point
+        if (Bob != null) Bob.position = currPoint;
         points.Add(currPoint);
 
         CheckForCollisions();

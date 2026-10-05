@@ -4,6 +4,7 @@ public class OverchargerScript : MonoBehaviour
 {
     public float overchargeRange = 9f;
     public float blindDuration = 5f; // Duration for which the guards will be blinded
+    private bool overchargeUnlocked;
     Animation anim;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -14,12 +15,20 @@ public class OverchargerScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.E))
+        if (overchargeUnlocked && Input.GetKeyDown(KeyCode.E))
         {
-            anim["Overcharge"].time = 0f;
-            anim.Play();
+            if (anim != null)
+            {
+                anim["Overcharge"].time = 0f;
+                anim.Play();
+            }
             Blind();
         }
+    }
+
+    public void UnlockOvercharge()
+    {
+        overchargeUnlocked = true;
     }
 
     void Blind()

@@ -14,6 +14,19 @@ public class Sensor : MonoBehaviour
     public Collider2D sensorCollider;
     private bool isTriggered = false;
 
+    private void Awake()
+    {
+        if (lightBeam == null)
+        {
+            lightBeam = FindFirstObjectByType<BendingLightBeam>();
+        }
+
+        if (sensorCollider == null)
+        {
+            sensorCollider = GetComponentInChildren<Collider2D>();
+        }
+    }
+
     void Update()
     {
         bool currentlyHit = CheckIfBeamHitsSensor();
