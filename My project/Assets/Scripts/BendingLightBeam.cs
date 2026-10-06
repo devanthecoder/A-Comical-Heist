@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 [RequireComponent(typeof(LineRenderer))]
 public class BendingLightBeam : MonoBehaviour
@@ -57,11 +58,14 @@ public class BendingLightBeam : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.X))
         {
+            if (IsPlayerOnVoid()) return;
+
             foreach (GameObject brokenBeam in BrokenBeams)
             {
                 brokenBeam.GetComponent<Animation>().Play("BrokenBeamDespawn"); // Play the fade-out animation for each broken beam
                 Destroy(brokenBeam, 1f);
             }
+
             BrokenBeams.Clear();
             Battery.SetBlockedBatteryLife(0f); // Reset blocked battery life when clearing broken beams
         }
@@ -188,20 +192,106 @@ public class BendingLightBeam : MonoBehaviour
         Vector2[] ribbonPoints = GenerateRibbonPoints(points, thickness * (2f/3f));
         polyCollider.SetPath(0, ribbonPoints);
 
-        // 4. Parent to Void Tilemap so it enters its Composite Solver
-        GameObject voidTilemap = GameObject.FindWithTag("Void");
-        if (voidTilemap != null)
-        {
-            brokenBeam.transform.SetParent(voidTilemap.transform);
+        Tilemap voidTilemap = FindVoidTilemap(points);
+        CompositeCollider2D voidComposite = EnsureVoidComposite(voidTilemap);
 
-            // 5. Subtract the closed polygon from the void composite
+        // Parent to the target tilemap so its collider joins that composite.
+        if (voidTilemap != null && voidComposite != null)
+        {
+            brokenBeam.transform.SetParent(voidTilemap.transform, true);
+
             polyCollider.compositeOperation = Collider2D.CompositeOperation.Difference;
             polyCollider.compositeOrder = 1;
+            Physics2D.SyncTransforms();
+            voidComposite.GenerateGeometry();
+        }
+        else
+        {
+            Debug.LogError("Cannot create a bridge: no active Void Tilemap with a CompositeCollider2D was found.", this);
         }
 
         BrokenBeams.Add(brokenBeam);
         ResetBeam(); 
         Battery.BlockBatteryLife(batterBeforeBendingStarted - Battery.GetBatteryLife());
+    }
+
+    private Tilemap FindVoidTilemap(List<Vector3> beamPoints)
+    {
+        Tilemap bestTilemap = null;
+        int bestPointCount = 0;
+
+        foreach (Tilemap tilemap in FindObjectsByType<Tilemap>(FindObjectsSortMode.None))
+        {
+            if (!tilemap.gameObject.activeInHierarchy || tilemap.name != "Tilemap_Void") continue;
+
+            int pointCount = 0;
+            foreach (Vector3 point in beamPoints)
+            {
+                if (tilemap.HasTile(tilemap.WorldToCell(point))) pointCount++;
+            }
+
+            if (pointCount > bestPointCount)
+            {
+                bestTilemap = tilemap;
+                bestPointCount = pointCount;
+            }
+        }
+
+        if (bestTilemap != null) return bestTilemap;
+
+        GameObject taggedVoid = GameObject.FindWithTag("Void");
+        return taggedVoid != null ? taggedVoid.GetComponent<Tilemap>() : null;
+    }
+
+    private CompositeCollider2D EnsureVoidComposite(Tilemap tilemap)
+    {
+        if (tilemap == null) return null;
+
+        GameObject tilemapObject = tilemap.gameObject;
+        Rigidbody2D body = tilemapObject.GetComponent<Rigidbody2D>();
+        if (body == null) body = tilemapObject.AddComponent<Rigidbody2D>();
+        body.bodyType = RigidbodyType2D.Static;
+        body.gravityScale = 0f;
+
+        CompositeCollider2D composite = tilemapObject.GetComponent<CompositeCollider2D>();
+        if (composite == null) composite = tilemapObject.AddComponent<CompositeCollider2D>();
+
+        TilemapCollider2D tilemapCollider = tilemapObject.GetComponent<TilemapCollider2D>();
+        if (tilemapCollider == null) tilemapCollider = tilemapObject.AddComponent<TilemapCollider2D>();
+        tilemapCollider.compositeOperation = Collider2D.CompositeOperation.Merge;
+
+        Physics2D.SyncTransforms();
+        composite.GenerateGeometry();
+        return composite;
+    }
+
+    private bool IsPlayerOnVoid()
+    {
+        if (playerMovement == null) return false;
+
+        Collider2D playerCollider = playerMovement.GetComponent<Collider2D>();
+        if (playerCollider == null) return false;
+
+        Physics2D.SyncTransforms();
+        Bounds playerBounds = playerCollider.bounds;
+        Vector2[] footPoints =
+        {
+            new Vector2(playerBounds.center.x, playerBounds.min.y - 0.02f),
+            new Vector2(playerBounds.min.x + 0.05f, playerBounds.min.y - 0.02f),
+            new Vector2(playerBounds.max.x - 0.05f, playerBounds.min.y - 0.02f)
+        };
+
+        foreach (Tilemap tilemap in FindObjectsByType<Tilemap>(FindObjectsSortMode.None))
+        {
+            if (!tilemap.gameObject.activeInHierarchy || tilemap.name != "Tilemap_Void") continue;
+
+            foreach (Vector2 footPoint in footPoints)
+            {
+                if (tilemap.HasTile(tilemap.WorldToCell(footPoint))) return true;
+            }
+        }
+
+        return false;
     }
 
     // Helper method: Creates a closed polygon shape wrapping around line points
