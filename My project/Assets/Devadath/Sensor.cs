@@ -36,6 +36,7 @@ public class Sensor : MonoBehaviour
         if (currentlyHit && !isTriggered)
         {
             isTriggered = true;
+            sensorAnimation["SensorActivated"].time = 0f; // Reset the animation to the start
             sensorAnimation.Play("SensorActivated");
             OpenDoor();
         }
@@ -43,6 +44,7 @@ public class Sensor : MonoBehaviour
         else if (!currentlyHit && isTriggered)
         {
             isTriggered = false;
+            sensorAnimation["SensorDeactivated"].time = 0f; // Reset the animation to the start
             sensorAnimation.Play("SensorDeactivated");
             CloseDoor();
         }

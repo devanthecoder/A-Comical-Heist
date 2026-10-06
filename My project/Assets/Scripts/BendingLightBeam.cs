@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor.Presets;
 
 [RequireComponent(typeof(LineRenderer))]
 public class BendingLightBeam : MonoBehaviour
@@ -24,8 +23,8 @@ public class BendingLightBeam : MonoBehaviour
     private LineRenderer lineRenderer;
     private bool isBending = false;
     private bool canBend = true;
-    private bool bendingUnlocked;
-    private bool bridgeUnlocked;
+    [SerializeField] private bool bendingUnlocked;
+    [SerializeField] private bool bridgeUnlocked;
     private Vector3 currPoint, currDirection;
     private float batterBeforeBendingStarted;
     List<Vector3> points = new List<Vector3>();
@@ -52,6 +51,7 @@ public class BendingLightBeam : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.V) && bridgeUnlocked && isBending)
         {
+            CleanBending();
             BreakLightBeam();
         }
 
@@ -83,7 +83,7 @@ public class BendingLightBeam : MonoBehaviour
 
         playerMovement.enabled = false; // Disable player movement when bending starts
         playerMovement.Stop(); // Stop the player's movement immediately when bending starts
-        // Bob.gameObject.SetActive(true); // Activate Bob when bending starts
+        Bob.gameObject.SetActive(true); // Activate Bob when bending starts
         currPoint = transform.position; // Reset the current point to the start point when toggling bending
         currDirection = transform.up; // Reset the current direction to the initial direction
         points.Add(currPoint); // Add the start point to the list of points
@@ -106,6 +106,7 @@ public class BendingLightBeam : MonoBehaviour
     {
         isBending = false; // Set bending flag to false
         playerMovement.enabled = true; // Enable player movement when bending stops
+        torch_anim.Play("OpenLight"); // Play the OpenLight animation when bending stops
         StartCoroutine(ClearLineSmoothly(points.Count, () => {
             ResetBeam(); // Reset the beam after clearing the line renderer
         }));
@@ -117,10 +118,10 @@ public class BendingLightBeam : MonoBehaviour
         isBending = false; // Set bending flag to false
         if (playerMovement != null) playerMovement.enabled = true;
         // Bob.gameObject.SetActive(false); // Deactivate Bob when bending stops
+        Bob.gameObject.SetActive(false); // Deactivate Bob when bending stops
         points.Clear(); // Clear the points when stopping the bending
         lineRenderer.positionCount = 0; // Reset the line renderer
         lineRenderer.enabled = false; // Disable the line renderer when not bending
-        torch_anim.Play("OpenLight"); // Play the OpenLight animation when bending stops
         canBend = true;
     }
 

@@ -4,7 +4,7 @@ public class OverchargerScript : MonoBehaviour
 {
     public float overchargeRange = 9f;
     public float blindDuration = 5f; // Duration for which the guards will be blinded
-    private bool overchargeUnlocked;
+    [SerializeField] private bool overchargeUnlocked;
     Animation anim;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -36,6 +36,7 @@ public class OverchargerScript : MonoBehaviour
         Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, overchargeRange);
         foreach (Collider2D collider in colliders)
         {
+            Debug.Log("Collider found: " + collider.name);
             if (collider.CompareTag("Enemy") 
                 && Physics2D.Linecast(transform.position, collider.transform.position).collider == collider)
             {

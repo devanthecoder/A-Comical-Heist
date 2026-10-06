@@ -16,6 +16,7 @@ public class ComicUnlock : MonoBehaviour
     public string escapeTrigger = "StartEscape";
     public AudioSource escapeAudio;
     public ParticleSystem[] escapeEffects;
+    public GameObject tutorialUI; // Reference to the tutorial UI GameObject
 
     private void Reset()
     {
@@ -45,6 +46,11 @@ public class ComicUnlock : MonoBehaviour
         if (player == null || !GrantUnlock(player)) return;
 
         gameObject.SetActive(false);
+
+        if (tutorialUI != null)
+        {
+            tutorialUI.SetActive(true);
+        }
     }
 
     private bool GrantUnlock(PlayerMovement player)

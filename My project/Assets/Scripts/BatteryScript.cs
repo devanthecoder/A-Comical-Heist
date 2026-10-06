@@ -16,7 +16,7 @@ public class BatteryScript : MonoBehaviour
 
     void Update()
     {
-        if (currentBatteryLife > 0)
+        if (currentBatteryLife < batteryLife)
         {
             currentBatteryLife += replenishRate * Time.deltaTime;
         }

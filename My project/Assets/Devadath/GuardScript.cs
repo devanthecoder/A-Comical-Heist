@@ -223,6 +223,9 @@ public class GuardScript : MonoBehaviour
     [Header("Target & Layers")]
     private Transform player;
     public LayerMask obstacleMask;
+    public Animation alertAnimation; // Reference to the alert animation component
+    public float seeThreshold = 1f; // Time in seconds the player must be seen to trigger a catch
+    public GameObject starObject;
 
     [Header("Run / Chase Settings")]
     public bool canRun = true;           // Toggle running ability per guard instance
@@ -237,6 +240,7 @@ public class GuardScript : MonoBehaviour
     public float moveDuration = 0.8f;    // Time (seconds) spent traveling between stops
     public float pauseDuration = 0.5f;   // Seconds to pause at each stop
 
+    private float SeeScore = 0f;        // Accumulated time player is seen
     private Animator animator;
     private Light2D visionLight;
     private Transform lightTransform;
@@ -250,6 +254,7 @@ public class GuardScript : MonoBehaviour
     private bool isPausing = false;
     private bool isBlinded = false;
     private bool isChasing = false;
+    private bool caught = false;
 
     private float fromAngle;
     private float toAngle;
@@ -283,11 +288,17 @@ public class GuardScript : MonoBehaviour
     {
         if (!isBlinded)
         {
-            if (CanSeePlayer())
+            if (CanSeePlayer() && !caught)
             {
+                caught = true;
                 if (canRun)
                 {
                     isChasing = true;
+                } else
+                {
+                    alertAnimation.Play("Alerted"); // Play alert animation when player is seen but guard cannot run
+                    player.GetComponent<PlayerMovement>().GotCaught(); // Disable player movement for 1 second
+                    Invoke("PlayerCaught", 1f);
                 }
             }
 
@@ -304,12 +315,12 @@ public class GuardScript : MonoBehaviour
                     }
                 }
             }
-            else
+            else if (!caught)
             {
                 HandleSweep();
             }
-        }
-
+        } 
+        starObject.SetActive(isBlinded); // Show star object when blinded   
         // Animator updates
         if (animator != null)
         {
@@ -426,11 +437,13 @@ public class GuardScript : MonoBehaviour
                 RaycastHit2D hit = Physics2D.Raycast(lightPos, dirToPlayer, distanceToPlayer, obstacleMask);
                 if (hit.collider == null)
                 {
-                    return true;
+                    SeeScore += Time.deltaTime; // Increment SeeScore when player is seen
+                    if (SeeScore >= seeThreshold) return true;
+                    return false; // Player is seen but not yet caught
                 }
             }
         }
-
+        SeeScore = 0f; // Reset SeeScore if player is not seen
         return false;
     }
 
@@ -445,5 +458,13 @@ public class GuardScript : MonoBehaviour
     private void RecoverVision()
     {
         isBlinded = false;
+    }
+
+    void PlayerCaught()
+    {
+        // Implement what happens when the player is caught
+        Debug.Log("Player Caught!");
+        // You can add additional logic here, such as triggering a game over or resetting the level.
+
     }
 }

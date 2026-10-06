@@ -6,10 +6,13 @@ public class PlayerMovement : MonoBehaviour
     public float turnSpeed = 5f;
     public Transform lightHolder;
     public Animator animator;
+    public BendingLightBeam bendingLightBeam; // Reference to the BendingLightBeam script
 
     Rigidbody2D rb;
     SpriteRenderer spriteRenderer;
     Vector3 normalized;
+
+    bool isCaught = false; // Flag to check if the player is caught
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -20,6 +23,7 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (isCaught) return; // If the player is caught, skip movement and rotation
         var hor = Input.GetAxisRaw("Horizontal");
         var vert = Input.GetAxisRaw("Vertical");
         normalized = new Vector3(hor, vert, 0).normalized;
@@ -49,5 +53,18 @@ public class PlayerMovement : MonoBehaviour
     {
         rb.linearVelocity = Vector2.zero;
         animator.SetFloat("Speed", 0f);
+    }
+
+    public void GotCaught()
+    {
+        isCaught = true; // Set the caught flag to true
+        Stop();
+        bendingLightBeam.enabled = false; // Disable the BendingLightBeam script
+        Invoke("AfterCaught", 1f); // Call AfterCaught after 1 second
+    }
+
+    void AfterCaught()
+    {
+        GameManager.instance.GotCaught(); // Call the GotCaught method in GameManager
     }
 }
