@@ -252,7 +252,7 @@ public class GuardScript : MonoBehaviour
     private int direction = 1;
     private float stateTimer = 0f;
     private bool isPausing = false;
-    private bool isBlinded = false;
+    public bool isBlinded = false;
     private bool isChasing = false;
     private bool caught = false;
 
@@ -437,6 +437,7 @@ public class GuardScript : MonoBehaviour
                 RaycastHit2D hit = Physics2D.Raycast(lightPos, dirToPlayer, distanceToPlayer, obstacleMask);
                 if (hit.collider == null)
                 {
+                    // Debug.Log(hit.collider.gameObject.name, hit.collider.gameObject);
                     SeeScore += Time.deltaTime; // Increment SeeScore when player is seen
                     if (SeeScore >= seeThreshold) return true;
                     return false; // Player is seen but not yet caught
@@ -466,5 +467,15 @@ public class GuardScript : MonoBehaviour
         Debug.Log("Player Caught!");
         // You can add additional logic here, such as triggering a game over or resetting the level.
 
+    }
+
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Player") && !isBlinded)
+        {
+            alertAnimation.Play("Alerted"); // Play alert animation when player is seen but guard cannot run
+            player.GetComponent<PlayerMovement>().GotCaught(); // Disable player movement for 1 second
+            Invoke("PlayerCaught", 1f);
+        }
     }
 }

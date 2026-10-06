@@ -23,7 +23,12 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (isCaught) return; // If the player is caught, skip movement and rotation
+        if (isCaught)
+        {
+            rb.linearVelocity = Vector2.zero;
+            return;
+        }  // If the player is caught, skip movement and rotation
+            
         var hor = Input.GetAxisRaw("Horizontal");
         var vert = Input.GetAxisRaw("Vertical");
         normalized = new Vector3(hor, vert, 0).normalized;

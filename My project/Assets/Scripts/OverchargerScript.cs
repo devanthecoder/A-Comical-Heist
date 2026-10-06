@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class OverchargerScript : MonoBehaviour
 {
+    public BatteryScript Battery;
+    public float BatteryCost;
     public float overchargeRange = 9f;
     public float blindDuration = 5f; // Duration for which the guards will be blinded
     [SerializeField] private bool overchargeUnlocked;
@@ -21,6 +23,7 @@ public class OverchargerScript : MonoBehaviour
             {
                 anim["Overcharge"].time = 0f;
                 anim.Play();
+                Battery.DepleteBattery(BatteryCost);
             }
             Blind();
         }
@@ -36,13 +39,13 @@ public class OverchargerScript : MonoBehaviour
         Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, overchargeRange);
         foreach (Collider2D collider in colliders)
         {
-            Debug.Log("Collider found: " + collider.name);
             if (collider.CompareTag("Enemy") 
-                && Physics2D.Linecast(transform.position, collider.transform.position).collider == collider)
+                && !Physics2D.Linecast(transform.position, collider.transform.position, LayerMask.GetMask("Obstacle")))
             {
                 GuardScript enemy = collider.GetComponent<GuardScript>();
                 if (enemy != null)
                 {
+                    Debug.Log("Collider found: " + collider.name);
                     enemy.Blind(blindDuration);
                 }
             }

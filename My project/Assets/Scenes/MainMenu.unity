@@ -2332,6 +2332,7 @@ GameObject:
   - component: {fileID: 480695512}
   - component: {fileID: 480695511}
   - component: {fileID: 480695510}
+  - component: {fileID: 480695513}
   m_Layer: 5
   m_Name: Vid (1)
   m_TagString: Untagged
@@ -2376,10 +2377,10 @@ VideoPlayer:
   m_TargetMaterialProperty: <noninit>
   m_RenderMode: 2
   m_AspectRatio: 2
-  m_DataSource: 0
+  m_DataSource: 1
   m_TimeUpdateMode: 2
   m_PlaybackSpeed: 1
-  m_AudioOutputMode: 2
+  m_AudioOutputMode: 0
   m_TargetAudioSources:
   - {fileID: 0}
   m_DirectAudioVolumes:
@@ -2429,6 +2430,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 480695508}
   m_CullTransparentMesh: 1
+--- !u!114 &480695513
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 480695508}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d028c8a5d2f79bb4c9a0b4be091fe8ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WebGLAutoPlayer
+  videoFileName: tut_gettingpastguards.mp4
 --- !u!1 &491049346
 GameObject:
   m_ObjectHideFlags: 0
@@ -2586,7 +2600,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &510457887
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2713,6 +2727,7 @@ GameObject:
   - component: {fileID: 555522130}
   - component: {fileID: 555522129}
   - component: {fileID: 555522128}
+  - component: {fileID: 555522131}
   m_Layer: 5
   m_Name: Vid
   m_TagString: Untagged
@@ -2757,10 +2772,10 @@ VideoPlayer:
   m_TargetMaterialProperty: <noninit>
   m_RenderMode: 2
   m_AspectRatio: 2
-  m_DataSource: 0
+  m_DataSource: 1
   m_TimeUpdateMode: 2
   m_PlaybackSpeed: 1
-  m_AudioOutputMode: 2
+  m_AudioOutputMode: 0
   m_TargetAudioSources:
   - {fileID: 0}
   m_DirectAudioVolumes:
@@ -2810,6 +2825,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 555522126}
   m_CullTransparentMesh: 1
+--- !u!114 &555522131
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 555522126}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d028c8a5d2f79bb4c9a0b4be091fe8ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WebGLAutoPlayer
+  videoFileName: tut_wasd.mp4
 --- !u!1 &627357728
 GameObject:
   m_ObjectHideFlags: 0
@@ -5489,6 +5517,7 @@ GameObject:
   - component: {fileID: 1466735093}
   - component: {fileID: 1466735092}
   - component: {fileID: 1466735091}
+  - component: {fileID: 1466735094}
   m_Layer: 5
   m_Name: Vid
   m_TagString: Untagged
@@ -5533,10 +5562,10 @@ VideoPlayer:
   m_TargetMaterialProperty: <noninit>
   m_RenderMode: 2
   m_AspectRatio: 2
-  m_DataSource: 0
+  m_DataSource: 1
   m_TimeUpdateMode: 2
   m_PlaybackSpeed: 1
-  m_AudioOutputMode: 2
+  m_AudioOutputMode: 0
   m_TargetAudioSources:
   - {fileID: 0}
   m_DirectAudioVolumes:
@@ -5586,6 +5615,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1466735089}
   m_CullTransparentMesh: 1
+--- !u!114 &1466735094
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1466735089}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d028c8a5d2f79bb4c9a0b4be091fe8ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WebGLAutoPlayer
+  videoFileName: tut_bridge.mp4
 --- !u!1 &1570417783
 GameObject:
   m_ObjectHideFlags: 0
@@ -5767,6 +5809,7 @@ GameObject:
   - component: {fileID: 1641502592}
   - component: {fileID: 1641502591}
   - component: {fileID: 1641502590}
+  - component: {fileID: 1641502593}
   m_Layer: 5
   m_Name: Vid
   m_TagString: Untagged
@@ -5811,10 +5854,10 @@ VideoPlayer:
   m_TargetMaterialProperty: <noninit>
   m_RenderMode: 2
   m_AspectRatio: 2
-  m_DataSource: 0
+  m_DataSource: 1
   m_TimeUpdateMode: 2
   m_PlaybackSpeed: 1
-  m_AudioOutputMode: 2
+  m_AudioOutputMode: 0
   m_TargetAudioSources:
   - {fileID: 0}
   m_DirectAudioVolumes:
@@ -5864,6 +5907,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1641502588}
   m_CullTransparentMesh: 1
+--- !u!114 &1641502593
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1641502588}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d028c8a5d2f79bb4c9a0b4be091fe8ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WebGLAutoPlayer
+  videoFileName: tut_coverblown.mp4
 --- !u!1 &1663971135
 GameObject:
   m_ObjectHideFlags: 0
@@ -6495,6 +6551,7 @@ GameObject:
   - component: {fileID: 1798146495}
   - component: {fileID: 1798146494}
   - component: {fileID: 1798146493}
+  - component: {fileID: 1798146496}
   m_Layer: 5
   m_Name: Vid
   m_TagString: Untagged
@@ -6539,10 +6596,10 @@ VideoPlayer:
   m_TargetMaterialProperty: <noninit>
   m_RenderMode: 2
   m_AspectRatio: 2
-  m_DataSource: 0
+  m_DataSource: 1
   m_TimeUpdateMode: 2
   m_PlaybackSpeed: 1
-  m_AudioOutputMode: 2
+  m_AudioOutputMode: 0
   m_TargetAudioSources:
   - {fileID: 0}
   m_DirectAudioVolumes:
@@ -6592,6 +6649,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1798146491}
   m_CullTransparentMesh: 1
+--- !u!114 &1798146496
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1798146491}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d028c8a5d2f79bb4c9a0b4be091fe8ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WebGLAutoPlayer
+  videoFileName: tut_snakelightandsensor.mp4
 --- !u!1 &1803651608
 GameObject:
   m_ObjectHideFlags: 0
@@ -7105,6 +7175,7 @@ GameObject:
   - component: {fileID: 2005750786}
   - component: {fileID: 2005750785}
   - component: {fileID: 2005750784}
+  - component: {fileID: 2005750787}
   m_Layer: 5
   m_Name: Vid
   m_TagString: Untagged
@@ -7149,10 +7220,10 @@ VideoPlayer:
   m_TargetMaterialProperty: <noninit>
   m_RenderMode: 2
   m_AspectRatio: 2
-  m_DataSource: 0
+  m_DataSource: 1
   m_TimeUpdateMode: 2
   m_PlaybackSpeed: 1
-  m_AudioOutputMode: 2
+  m_AudioOutputMode: 0
   m_TargetAudioSources:
   - {fileID: 0}
   m_DirectAudioVolumes:
@@ -7202,6 +7273,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2005750782}
   m_CullTransparentMesh: 1
+--- !u!114 &2005750787
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2005750782}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d028c8a5d2f79bb4c9a0b4be091fe8ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WebGLAutoPlayer
+  videoFileName: tut_overcharge.mp4
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

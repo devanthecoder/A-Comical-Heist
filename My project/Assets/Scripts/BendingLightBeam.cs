@@ -110,6 +110,7 @@ public class BendingLightBeam : MonoBehaviour
     {
         isBending = false; // Set bending flag to false
         playerMovement.enabled = true; // Enable player movement when bending stops
+        Bob.gameObject.SetActive(false); // Deactivate Bob when bending stops
         torch_anim.Play("OpenLight"); // Play the OpenLight animation when bending stops
         StartCoroutine(ClearLineSmoothly(points.Count, () => {
             ResetBeam(); // Reset the beam after clearing the line renderer
@@ -122,7 +123,6 @@ public class BendingLightBeam : MonoBehaviour
         isBending = false; // Set bending flag to false
         if (playerMovement != null) playerMovement.enabled = true;
         // Bob.gameObject.SetActive(false); // Deactivate Bob when bending stops
-        Bob.gameObject.SetActive(false); // Deactivate Bob when bending stops
         points.Clear(); // Clear the points when stopping the bending
         lineRenderer.positionCount = 0; // Reset the line renderer
         lineRenderer.enabled = false; // Disable the line renderer when not bending

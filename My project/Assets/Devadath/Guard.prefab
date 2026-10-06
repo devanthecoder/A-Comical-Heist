@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4058860290417303376}
   - component: {fileID: 8508727364444002898}
   - component: {fileID: 6314036962975402774}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: AlertedSign
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -119,7 +119,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5679649887209632739}
   - component: {fileID: 8934531644401697209}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Spot Light 2D
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -203,7 +203,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2150959321323041037}
   - component: {fileID: 1203077094893369472}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Spot Light 2D (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -291,7 +291,7 @@ GameObject:
   - component: {fileID: 2000314852879500662}
   - component: {fileID: 1810239377792123533}
   - component: {fileID: 7148359592846197169}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Guard
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -403,6 +403,7 @@ MonoBehaviour:
   stopCount: 4
   moveDuration: 0.5
   pauseDuration: 0.1
+  isBlinded: 0
 --- !u!95 &2000314852879500662
 Animator:
   serializedVersion: 7
@@ -508,7 +509,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1450935438357133844}
   - component: {fileID: 1719497845102222109}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Stars
   m_TagString: Untagged
   m_Icon: {fileID: 0}
