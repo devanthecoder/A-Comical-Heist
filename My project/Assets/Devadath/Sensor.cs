@@ -6,6 +6,7 @@ public class Sensor : MonoBehaviour
 {
     [Header("Beam Reference")]
     public BendingLightBeam lightBeam;   // Reference to your player's BendingLightBeam script
+    public Animation sensorAnimation; // Reference to the sensor's animation component
 
     [Header("Door Target")]
     public SimpleTiledDoor targetDoor;   // Reference to the SimpleTiledDoor script
@@ -35,12 +36,14 @@ public class Sensor : MonoBehaviour
         if (currentlyHit && !isTriggered)
         {
             isTriggered = true;
+            sensorAnimation.Play("SensorActivated");
             OpenDoor();
         }
         // State changed: Active beam exited sensor, finished retracting, or was broken
         else if (!currentlyHit && isTriggered)
         {
             isTriggered = false;
+            sensorAnimation.Play("SensorDeactivated");
             CloseDoor();
         }
     }
