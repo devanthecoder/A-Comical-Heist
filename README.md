@@ -14,3 +14,5 @@ Team Details:
 
 Setup and Run Instructions:
 Go to the given link, and you can either play on itch.io browser directly or install the Windows build for PC. For Windows build, just unzip and play the executable with the same name as our game.
+
+AI Disclosure: Usage of AI for code generation.
