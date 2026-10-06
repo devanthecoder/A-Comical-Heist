@@ -57,7 +57,12 @@ public class ComicUnlock : MonoBehaviour
                 if (beam == null) return MissingAbility("BendingLightBeam");
 
                 if (unlockType == UnlockType.SnakeLight) beam.UnlockBending();
-                else beam.UnlockBridge();
+                else
+                {
+                    beam.UnlockBridge();
+                    GameObject bridgeGate = GameObject.Find("SensorDoor (2)");
+                    if (bridgeGate != null) bridgeGate.SetActive(false);
+                }
                 return true;
 
             case UnlockType.Overcharge:

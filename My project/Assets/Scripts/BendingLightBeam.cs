@@ -115,6 +115,7 @@ public class BendingLightBeam : MonoBehaviour
     void ResetBeam()
     {
         isBending = false; // Set bending flag to false
+        if (playerMovement != null) playerMovement.enabled = true;
         // Bob.gameObject.SetActive(false); // Deactivate Bob when bending stops
         points.Clear(); // Clear the points when stopping the bending
         lineRenderer.positionCount = 0; // Reset the line renderer
